@@ -1,6 +1,6 @@
 # Introduction to the Modeling and Analysis of Complex Systems
 
-Repository for working on the book Introduction to the **Modeling and Analysis of Complex Systems by Hiroki Sayama**
+Repository for working on the book **Introduction to the Modeling and Analysis of Complex Systems** by Hiroki Sayama
 
 # Book Page
 
