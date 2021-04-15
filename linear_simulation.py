@@ -23,14 +23,15 @@ def observe():
 	
 	
 def update(A_vec, trf_funcs=[]):
+
     global x, result
-	if trf_funcs == []:
-		x = np.matmul(A,x)
-	else:
-		x_new = []
-		for i, func in enumerate(trf_funcs):
-			x_new.append(func(x))
-		x = x_new
+    if trf_funcs == []:
+        x = np.matmul(A,x)
+    else:
+        x_new = []
+        for i, func in enumerate(trf_funcs):
+            x_new.append(func(x))
+        x = x_new
 	
 #-------------------------------------------------------
 
@@ -50,6 +51,9 @@ result = np.array(result)
 plot(result)
 
 plot(result[:,0], result[:,1])
+
+input('Press enter to continue...')
+close()
 #---------------------------------------------------------------------
 
 
@@ -85,7 +89,7 @@ for k in range(10):
 	input('Press enter to continue...')
 	close()
 #----------------------------------------------------------------------------------------	
-	
+
 
 #-----------------------logistic growth model eq. 4.26 ---------------------------
 # equatiion in the form (1+r)*x - (r/k)*x^2
@@ -141,3 +145,4 @@ result = np.array(result)
 
 plot(result)
 plot(result[:,0], result[:,1])
+
