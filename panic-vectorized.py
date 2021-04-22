@@ -6,56 +6,71 @@ Created on Wed Apr 21 23:59:55 2021
 """
 import pycxsimulator
 from pylab import *
+import time
+from numba import jit
 
-n = 3000 # size of space: n x n
-p = 0.20 # probability of initially panicky individuals
+n = 10000 # size of space: n x n
+p = 0.25 # probability of initially panicky individuals
 
-
-def set_panicky(indice):
-    global config, nextconfig, ind
-    count = 0
+@jit(nopython=True)
+def new_config(ids,counts,config):
     
-    for dx in [-1, 0, 1]:
-        for dy in [-1, 0, 1]:
-            count += config[(indice[0] + dx) % n, (indice[1] + dy) % n]
     
-    if count >= 4:
-        nextconfig[indice[0]][indice[1]] = 1
+        
+    #for every indice(x,y) counts neighbors
+    for indice in ids:
+        
+        counts[indice[0],indice[1]] = \
+        \
+        config[(indice[0]-1) % n, (indice[1]-1) % n] + \
+        config[(indice[0]-1) % n, (indice[1]) % n] + \
+        config[(indice[0]-1) % n, (indice[1]+1) % n] + \
+        config[(indice[0]) % n, (indice[1]-1) % n] + \
+        config[(indice[0]) % n, (indice[1]) % n] + \
+        config[(indice[0]) % n, (indice[1]+1) % n] + \
+        config[(indice[0]+1) % n, (indice[1]-1) % n] + \
+        config[(indice[0]+1) % n, (indice[1]) % n] + \
+        config[(indice[0]+1) % n, (indice[1]+1) % n]
     
-    else:
-        nextconfig[indice[0]][indice[1]] = 0
+    
+    return (counts >= 4) * 1
 
-set_panickyv = vectorize(set_panicky)
+
 
 
 def initialize():
+    seed(0)
     
-    global config, nextconfig,ids
+    global config, ids, counts
     config = (random((n,n)) < p) * 1
-    nextconfig = zeros((n,n))
+    counts = zeros((n,n))
     
-    # create array with the config array indices as tuple (x,y)
+    # create array with the config array indices as array [ [x1,y1], [x1,y2], ..., [xn,yn] ]
     ids = indices((n,n))
-    ids = array(list(zip(ids[0].ravel(),ids[1].ravel())), dtype='i,i')
+    ids = np.dstack((ids[0].ravel(),ids[1].ravel()))[0]
     
     
 def observe():
-    global config, nextconfig
+    global config
     cla()
     imshow(config, vmin = 0, vmax = 1, cmap = cm.binary)
 
 
 def update():
     
-    global config, nextconfig, ids
     
-    set_panickyv(ids)
-    config, nextconfig = nextconfig, config
+    global config, counts,ids
+    
+    
+    config = new_config(ids,counts,config)
+    
+
+        
     
 
 #pycxsimulator.GUI().start(func=[initialize, observe, update])
     
-import time
+
 init_time = 0
 end_time = 0
 
@@ -66,7 +81,7 @@ for t in range(5):
     
     print("iteration ", t+1)
     update()
-    observe()
+    #observe()
     
 end_time = time.time()
 

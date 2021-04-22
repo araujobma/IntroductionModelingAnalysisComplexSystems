@@ -3,11 +3,14 @@
 
 import pycxsimulator
 from pylab import *
+import time
 
-n = 3000 # size of space: n x n
-p = 0.20 # probability of initially panicky individuals
+n = 1000 # size of space: n x n
+p = 0.25 # probability of initially panicky individuals
 
 def initialize():
+    seed(0)
+    
     global config, nextconfig
     config = zeros([n, n])
     for x in range(n):
@@ -32,7 +35,7 @@ def update():
     config, nextconfig = nextconfig, config
 
 #pycxsimulator.GUI().start(func=[initialize, observe, update])
-import time
+
 init_time = 0
 end_time = 0
 
@@ -43,7 +46,7 @@ for t in range(5):
     
     print("iteration ", t+1)
     update()
-    observe()
+    #observe()
     
 end_time = time.time()
 
