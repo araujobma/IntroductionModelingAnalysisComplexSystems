@@ -18,7 +18,7 @@ from numba import jit
 
 w = 50
 h = 50
-init_p = 0.20 # probability of initially alive individuals
+init_p = 0.10 # probability of initially alive individuals
 
 @jit(nopython=True)
 def new_config(ids,counts,config):

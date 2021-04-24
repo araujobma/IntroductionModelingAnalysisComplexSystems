@@ -9,7 +9,7 @@ from pylab import *
 
 width = 50
 height = 50
-initProb = 0.2
+initProb = 0.1
 
 def initialize():
     global time, config, nextConfig
